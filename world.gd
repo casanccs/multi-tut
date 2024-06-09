@@ -38,14 +38,13 @@ func peer_connected(id):
 	print("Player joined: ", id)
 	register.rpc_id(id, player_info)
 	
-@rpc("any_peer", "reliable")
+@rpc("any_peer")
 func register(new_player_info):
 	players[multiplayer.get_remote_sender_id()] = new_player_info
 	
 # Only the client joining the server runs this
 func connected_to_server():
 	print("Connected to server")
-	players[multiplayer.get_unique_id()] = player_info
 
 func _on_start_pressed():
 	print(players)
@@ -55,7 +54,7 @@ func _on_start_pressed():
 func start(nplayers):
 	players = nplayers
 	$Menu.visible = false
-	for i in nplayers:
+	for i in nplayers: # is the id/iterating through the keys
 		var cPlayer = PlayerScene.instantiate()
 		cPlayer.set_multiplayer_authority(i)
 		cPlayer.global_position = $SpawnPoint.global_position
